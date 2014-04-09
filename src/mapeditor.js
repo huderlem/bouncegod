@@ -1,13 +1,22 @@
 // mapeditor.js
 
-function Voxel(x, y, z){
+var voxelColors = {
+    0 : 0x008800,
+    1 : 0xff0000,
+    2 : 0x0000ff,
+    3 : 0xffff00,
+    4 : 0x00ffff
+}
+
+function Voxel(x, y, z, voxelType){
     this.x = x;
     this.y = y;
     this.z = z;
+    this.voxelType = voxelType;
     
     var geometry = new THREE.CubeGeometry(1,1,1);
     var material = new THREE.MeshPhongMaterial( {
-        color: 0xffff00,
+        color: voxelColors[this.voxelType],
     });
     this.cube = new THREE.Mesh( geometry, material );
     this.cube.position.x = this.x;
@@ -81,7 +90,7 @@ function World(xSize, ySize, zSize) {
                             "x" : i,
                             "y" : j,
                             "z" : k,
-                            "blockType" : BLOCK_TYPE.NORMAL
+                            "blockType" : this.grid[i][j][k].voxelType
                         });
                     }
                 }
@@ -99,8 +108,29 @@ function World(xSize, ySize, zSize) {
 
         document.getElementById('level-output').value = levelJSON;
     }
-}
 
+    this.loadLevelData = function() {
+        var levelJSON = JSON.parse(document.getElementById('level-output').value);
+        this.xSize = levelJSON.xSize;
+        this.ySize = levelJSON.ySize;
+        this.zSize = levelJSON.zSize;
+
+        this.grid = new Array();
+        for (var i = 0; i < this.xSize; i++){
+            this.grid.push(new Array());
+            for (var j = 0; j < this.ySize; j++){
+                this.grid[i].push(new Array());
+                for (var k = 0; k < this.zSize; k++){
+                    this.grid[i][j].push(null);
+                }
+            }
+        }
+        for (var i = 0; i < levelJSON.blocks.length; i++) {
+            var block = levelJSON.blocks[i];
+            this.grid[block.x][block.y][block.z] = new Voxel(block.x, block.y, block.z, block.blockType);
+        }
+    }
+}
 
 function updateSelectedBlock(curPos, selectedBlock) {
     selectedBlock.position.x = curPos.x;
@@ -112,7 +142,6 @@ function render() {
     requestAnimationFrame(render);
     renderer.render(scene, camera);
 }
-
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -143,6 +172,12 @@ document.addEventListener('keydown', function(event) {
 document.addEventListener('keyup', function(event) {
     onDocumentKeyUp(event);
 }, false);
+
+document.getElementById('loadbutton').onclick = function() {
+    world.loadLevelData();
+};
+
+var curBlockId = BLOCK_TYPE.NORMAL;
 
 var shiftDown = false;
 
@@ -184,7 +219,7 @@ function onDocumentKeyDown(event) {
     } else if (keyCode == 13) { // enter
         // Fill in block or remove block if one is already there
         if (world.grid[curPos.x][curPos.y][curPos.z] == null) {
-            world.grid[curPos.x][curPos.y][curPos.z] = new Voxel(curPos.x, curPos.y, curPos.z);
+            world.grid[curPos.x][curPos.y][curPos.z] = new Voxel(curPos.x, curPos.y, curPos.z, curBlockId);
         } else {
             var obj = world.grid[curPos.x][curPos.y][curPos.z].cube;
             scene.remove(obj);
