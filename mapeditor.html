@@ -1,7 +1,10 @@
 <html>
     <head>
         <title>BounceGod Map Editor</title>
-        <style>canvas { width: 100%; height: 100%; } body {margin: 0;} #level-output {width: 100%;} </style>
+        <style>canvas { width: 100%; height: 100%; } body {margin: 0;} #level-output {width: 100%; height: 150px;} </style>
+        <style>canvas { width: 100%; height: 100% } body {margin: 0;}</style>
+        <style>.settings {color:white; position:absolute;}</style>
+        <style>#blocktype {right:25px; top:160px;}</style>
     </head>
     <body>
     	<textarea readonly name="level-output" class="myclass" id="level-output" rows="10" cols="50"></textarea>
@@ -14,5 +17,13 @@
         <script src="src/OrbitControls.js"></script>
         <script src="src/constants.js"></script>
         <script src="src/mapeditor.js"></script>
+        <form class="settings" id="blocktype">
+            Block Type:<br>
+            <input type="radio" name="blocktype" value="1"> Normal<br>
+            <input type="radio" name="blocktype" value="2"> 2<br>
+            <input type="radio" name="blocktype" value="3"> 3<br>
+            <input type="radio" name="blocktype" value="4"> 4<br>
+            <input type="radio" name="blocktype" value="5"> 5
+        </form>
     </body>
 </html>

@@ -18,6 +18,44 @@ function Voxel(x, y, z){
     
 }
 
+function Player(x, y, z){
+    this.x = x;
+    this.y = y;
+    this.z = z;
+    
+    this.vx = 0;
+    this.vy = 0;
+    this.vz = 0;
+    
+    var geometry = new THREE.SphereGeometry(.75, 32, 32)
+    var material = new THREE.MeshPhongMaterial( {
+        color: 0x00ff00,
+    });
+    this.ball = new THREE.Mesh( geometry, material);
+    this.ball.position.x = this.x;
+    this.ball.position.y = this.y;
+    this.ball.position.z = this.z;
+    
+    scene.add(this.ball);
+}
+Player.prototype.update = function(delta){ // Delta is in milliseconds
+    
+    // Update the velocities
+    this.vy -= .00005 * delta // "Gravity"
+        
+    //Update the position
+    this.x += this.vx * delta;
+    this.y += this.vy * delta;
+    this.z += this.vz * delta;
+    
+    this.ball.position.x = this.x;
+    this.ball.position.y = this.y;
+    this.ball.position.z = this.z;
+}
+
+
+
+
 function World(xSize, ySize, zSize) {
 
     this.grid = new Array();
@@ -47,11 +85,19 @@ function World(xSize, ySize, zSize) {
     
 }
 
+
 function render() {
 	requestAnimationFrame(render);
 	
-	//cube.rotation.x += 0.01;
-    //cube.rotation.y += 0.01;
+	var now = Date.now()
+	var delta = now - lastFrame;
+	lastFrame = now;
+	
+	
+	//update all of the things
+	if (delta <= 100){
+	    player.update(delta);
+	}
 	
 	renderer.render(scene, camera);
 }
@@ -74,5 +120,7 @@ camera.position.x = 5;
 camera.position.y = 2;
 
 var world = new World(10,10,10);
+var player = new Player(5,4,5);
 
+var lastFrame = Date.now();
 render();
