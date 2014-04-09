@@ -88,7 +88,7 @@ function World(xSize, ySize, zSize) {
             }
         }
 
-        JSON.stringify({
+        var levelJSON = JSON.stringify({
             "xSize" : this.xSize,
             "ySize" : this.ySize,
             "zSize" : this.zSize,
@@ -96,10 +96,10 @@ function World(xSize, ySize, zSize) {
             "lights" : [
             ]
         });
+
+        document.getElementById('level-output').value = levelJSON;
     }
 }
-
-
 
 
 function updateSelectedBlock(curPos, selectedBlock) {
@@ -130,19 +130,17 @@ selectedBlock.position.y = curPos.y;
 selectedBlock.position.z = curPos.z;
 scene.add(selectedBlock);
 
-var renderer = new THREE.WebGLRenderer();
-renderer.setSize( window.innerWidth, window.innerHeight );
-document.body.appendChild( renderer.domElement );
+var canvas = document.getElementsByTagName('canvas')[0];
 
 camera.position.z = 15;
 
 var world = new World(10,10,10);
 
-window.addEventListener('keydown', function(event) {
+document.addEventListener('keydown', function(event) {
     onDocumentKeyDown(event);
 }, false);
 
-window.addEventListener('keyup', function(event) {
+document.addEventListener('keyup', function(event) {
     onDocumentKeyUp(event);
 }, false);
 
@@ -153,6 +151,8 @@ function onDocumentKeyDown(event) {
     var keyCode = event.which;
     if (keyCode == 16) { // shift
         shiftDown = true;
+    } else if (keyCode == 32) { // space
+        world.generateLevelData();
     } else if (keyCode == 37) { // left
         var newX = curPos.x - 1 >= 0 ? curPos.x - 1 : 0;
         curPos.setX(newX);
