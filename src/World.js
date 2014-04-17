@@ -1,4 +1,7 @@
 function World(xSize, ySize, zSize) {
+    this.xSize = xSize;
+    this.ySize = ySize;
+    this.zSize = zSize;
 
     this.lights = new Array()
     
@@ -27,3 +30,12 @@ function World(xSize, ySize, zSize) {
     scene.add(light);
     
 }
+World.prototype.getVoxelAt = function(xPos, yPos, zPos) {
+    if (xPos >= 0 && xPos < this.xSize &&
+        yPos >= 0 && yPos < this.ySize &&
+        zPos >= 0 && zPos < this.zSize) {
+        return this.grid[xPos][yPos][zPos];
+    } else {
+        return null;
+    }
+};

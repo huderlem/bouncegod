@@ -1,7 +1,9 @@
 function Voxel(x, y, z){
     
     // Create the Mesh
-    var geometry = new THREE.CubeGeometry(1,1,1);
+    this.width = 1;
+
+    var geometry = new THREE.CubeGeometry(this.width, this.width, this.width);
     var material = new THREE.MeshPhongMaterial( {
         color: 0xffff00,
         wireframe: true,

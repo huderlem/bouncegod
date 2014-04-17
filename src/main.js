@@ -18,7 +18,7 @@ function init(){
     
     // Instantiate objects in the scene
     world = new World(10,10,10);
-    player = new Player(5,4,5);
+    player = new Player(1,4,1);
 
     
 }
@@ -30,8 +30,10 @@ function update(){
 	
 	//update all of the things
 	if (delta <= 100){
-	    player.update(delta);
-	}
+	    player.update(delta, world);
+	} else {
+        console.log(delta);
+    }
 }
 
 function render() {
