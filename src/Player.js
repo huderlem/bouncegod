@@ -18,6 +18,23 @@ function Player(x, y, z){
     // Add the mesh to the scene
     scene.add(this.mesh);
 }
+
+Player.prototype.attachCamera = function(camera){
+    camera.position.z = 4;
+    camera.position.x = 0;
+    camera.position.y = 2;
+    
+    console.log(camera.rotation);
+    
+    //camera.lookAt(this.mesh.position);
+    
+    console.log(camera.rotation);
+    
+    this.mesh.add(camera);
+    
+    console.log(camera.rotation);
+}
+
 Player.prototype.update = function(delta, world){ // Delta is in milliseconds
     
     // Update the velocities

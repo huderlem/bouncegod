@@ -6,22 +6,21 @@ var keyboard
 
 function init(){
     scene = new THREE.Scene();
-    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     renderer = new THREE.WebGLRenderer();
+    renderer.setClearColor(0xffffff, 1);
     keyboard = new THREEx.KeyboardState();
     
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
     
     
-    camera.position.z = 15;
-    camera.position.x = 5;
-    camera.position.y = 2;
-    
     // Instantiate objects in the scene
     world = new World(10,10,10);
     player = new Player(1,4,1);
     
+    camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+    player.attachCamera(camera);
+        
 }
 function update(){
 
