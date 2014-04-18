@@ -18,10 +18,42 @@ function Player(x, y, z){
     // Add the mesh to the scene
     scene.add(this.mesh);
 }
+
+Player.prototype.attachCamera = function(camera){
+    camera.position.z = 4;
+    camera.position.x = 0;
+    camera.position.y = 2;
+    
+    console.log(camera.rotation);
+    
+    //camera.lookAt(this.mesh.position);
+    
+    console.log(camera.rotation);
+    
+    this.mesh.add(camera);
+    
+    console.log(camera.rotation);
+}
+
 Player.prototype.update = function(delta, world){ // Delta is in milliseconds
     
     // Update the velocities
-    this.velocity.y -= .000000 * delta // "Gravity"
+    //this.velocity.y -= .000001 * delta; // "Gravity"
+    
+    var moveConst = .000007
+    
+    if (keyboard.pressed("right")) {
+        this.velocity.x += moveConst * delta;
+    }
+    if (keyboard.pressed("left")) {
+        this.velocity.x -= moveConst * delta;
+    }
+    if (keyboard.pressed("up")) {
+        this.velocity.z -= moveConst * delta;
+    }
+    if (keyboard.pressed("down")) {
+        this.velocity.z += moveConst * delta;
+    }
         
     //Update the position
     this.mesh.position.x += this.velocity.x * delta;
