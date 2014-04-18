@@ -7,7 +7,8 @@ function init(){
     scene = new THREE.Scene();
     camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
     renderer = new THREE.WebGLRenderer();
-    
+    renderer.setClearColor( 0xffffff, 1);
+
     renderer.setSize( window.innerWidth, window.innerHeight );
     document.body.appendChild( renderer.domElement );
     
@@ -18,9 +19,9 @@ function init(){
     
     // Instantiate objects in the scene
     world = new World(10,10,10);
-    player = new Player(1,4,1);
+    player = new Player(-0.85,0,9.85);
 
-    
+    var controls = new THREE.OrbitControls( camera );
 }
 function update(){
 

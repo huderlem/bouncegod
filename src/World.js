@@ -26,7 +26,7 @@ function World(xSize, ySize, zSize) {
     
     // Add lights
     var light = new THREE.PointLight(0xffffff, 1, 100);
-    light.position.set(2,2,2);
+    light.position.set(2,20,20);
     scene.add(light);
     
 }
