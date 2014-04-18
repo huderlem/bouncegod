@@ -106,11 +106,16 @@ function World(xSize, ySize, zSize) {
             ]
         });
 
-        document.getElementById('level-output').value = levelJSON;
+        //document.getElementById('level-output').value = levelJSON;
+
+        window.prompt("Here's your level:", levelJSON);
     }
 
     this.loadLevelData = function() {
-        var levelJSON = JSON.parse(document.getElementById('level-output').value);
+        //var levelJSON = JSON.parse(document.getElementById('level-output').value);
+
+        var levelJSON = JSON.parse(window.prompt("Enter level code:"))
+
         this.xSize = levelJSON.xSize;
         this.ySize = levelJSON.ySize;
         this.zSize = levelJSON.zSize;
