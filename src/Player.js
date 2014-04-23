@@ -38,7 +38,7 @@ Player.prototype.attachCamera = function(camera){
 Player.prototype.update = function(delta, world){ // Delta is in milliseconds
     
     // Update the velocities
-    //this.velocity.y -= .000001 * delta; // "Gravity"
+    this.velocity.y -= .000001 * delta; // "Gravity"
     
     var moveConst = .000007
     
@@ -130,9 +130,19 @@ Player.prototype.checkCollision = function(world) {
 
                 // is it actually intersecting?
                 if (Math.pow(closestX - this.mesh.position.x, 2) + Math.pow(closestY - this.mesh.position.y, 2) + Math.pow(closestZ - this.mesh.position.z, 2) < this.radius*this.radius) {
-                    this.material.color.setHex( Math.random() * 0xffffff );
-                    // figure out which of the 6 sides it hit (for now... maybe we'll have to do corners later)
+                    // get normal vector to cube
+                    var normal = new THREE.Vector3( this.mesh.position.x - closestX,
+                                                    this.mesh.position.y - closestY,
+                                                    this.mesh.position.z - closestZ );
+                    // project the velocity onto the normal
+                    var projection = new THREE.Vector3( this.velocity.x, 
+                                                        this.velocity.y, 
+                                                        this.velocity.z).projectOnVector(normal).multiplyScalar(2);
+                    // substract 2*projection from current velocity
+                    this.velocity.sub( projection );
 
+                    // maybe return something useful?
+                    return;
                 }
             }
         }
